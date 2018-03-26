@@ -22,3 +22,19 @@
   file: path=/usr/local/bin/rancher-compose mode=0755
   become: yes
   when: rancher_compose_install
+
+- name: Create the Rancher config directory
+  file:
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    path: "~{{ ansible_user }}/.rancher"
+    state: directory
+    mode: 0755
+
+- name: Create the Rancher config
+  template:
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    src: cli.json.j2
+    dest: "~{{ ansible_user }}/.rancher/cli.json"
+    mode: 0600
